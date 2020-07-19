@@ -1,0 +1,19 @@
+#server:
+#  port: 12000
+#  servlet:
+#    context-path: /upload
+#  tomcat:
+#    max-threads: 10
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+logging:
+  level:
+   root: info
+   org.springframework.web: info
+   com.lp.controller: info
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+
