@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/test")
-public class TestController {
+public class ExceptionController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
