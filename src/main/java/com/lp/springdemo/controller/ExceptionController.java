@@ -5,6 +5,7 @@ import com.lp.springdemo.exception.OperationException;
 import com.lp.springdemo.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,12 +34,16 @@ public class ExceptionController {
 
     @RequestMapping("/testException")
     public void testException() throws OperationException {
-        throw new OperationException("00-0001","test exception");
+        throw new OperationException("test exception","00-0001");
     }
 
     @RequestMapping("/testAssert")
-    public void testAssert() throws OperationException {
+    public void testAssert() {
         int i = 0;
         Preconditions.checkArgument(i>1,"testAssert error");
+    }
+
+    @RequestMapping("/testValidation")
+    public void testValidation(@RequestBody @Validated({UserModel.findGroup.class}) UserModel model) {
     }
 }

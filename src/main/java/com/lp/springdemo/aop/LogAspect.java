@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 @Aspect
 @Component
+@Order(1)
 public class LogAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
@@ -38,14 +40,19 @@ public class LogAspect {
         // 统计方法执行时间
         Stopwatch stopwatch = Stopwatch.createStarted();
         // 获取执行的返回结果
-        String result = "";
+        Object result = null;
+        String resultMessage = "";
 
         // 方法是否执行成功
         boolean isSuccess = true;
         String errorMessage = "";
+
         long millis = 0L;
         try {
-            result = pjp.proceed().toString();
+            result = pjp.proceed();
+            if (result!=null) {
+                resultMessage = result.toString();
+            }
             millis = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
         } catch (Throwable throwable) {
             // 修改标记，并且读取异常堆栈信息
@@ -53,7 +60,7 @@ public class LogAspect {
             errorMessage = getStackInfo(throwable);
             throw throwable;
         } finally {
-            logger.info("LogAspect-[{}]方法，执行结果：[{}]，请求参数：{}，返回参数：[{}]，执行时间：[{}]毫秒，异常信息：[{}]", name, isSuccess, param, result, millis, errorMessage);
+            logger.info("LogAspect-[{}]方法，执行结果：[{}]，请求参数：{}，返回参数：[{}]，执行时间：[{}]毫秒，异常信息：[{}]", name, isSuccess, param, resultMessage, millis, errorMessage);
             builder.delete(0, builder.length() - 1);
         }
         return result;

@@ -2,8 +2,14 @@ package com.lp.springdemo.model;
 
 import cn.hutool.json.JSONUtil;
 
+import javax.validation.constraints.NotNull;
+
 public class UserModel {
+
+    public interface findGroup{}
+
     private int age;
+    @NotNull(groups = findGroup.class,message = "用户名不允许为空")
     private String userName;
     private int gender;
 
