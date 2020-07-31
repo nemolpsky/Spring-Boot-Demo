@@ -3,7 +3,10 @@
 #  servlet:
 #    context-path: /upload
 #  tomcat:
-#    max-threads: 10
+#    max-threads: 10\
+server:
+  tomcat:
+    connection-timeout: 1
 spring:
   servlet:
     multipart:
@@ -16,4 +19,7 @@ logging:
    com.lp.controller: info
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  file.max-size: 10MB
+  file:
+    path: "./opt/jar/logs/spring-boot-demo.log"
 
